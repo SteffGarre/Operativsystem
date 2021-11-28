@@ -186,6 +186,33 @@ struct head *find(size_t size){
 }
 
 
+struct head *merge(struct head *block){
+
+	struct head *aft = after(block);
+	
+	
+	if(block->bfree == TRUE){
+	
+		struct head *bef = before(block);
+		detach(bef);
+		
+		bef->size = bef->size + block->size + HEAD;
+		aft->bsize = bef->size;
+		block = bef;
+	}
+
+	if(aft->free == TRUE){
+
+		detach(aft);
+
+		block->size = block->size + aft->size + HEAD;
+		aft = after(block);
+		aft->bsize = block->size;
+	}
+
+	return block;
+}
+
 
 void *dalloc(size_t request){
 
@@ -217,3 +244,73 @@ void dfree (void *memory){
   
   return;
 }
+
+void traverseblocks(){
+	struct head *temp = arena;
+	
+	while(temp->size != 0){
+		printf("address: %p\t, free: %d\t, size: %d\t, bfree: %d\t, bsize: %d\t\n", 
+    temp, temp->free, temp->size, temp->bfree, temp->bsize);
+		
+		temp = after(temp);
+	}
+}
+
+void sanity(){
+
+	struct head *sanity = flist;
+	struct head *prev = sanity->prev;
+	
+	int size = sanity->size;
+	
+	while(sanity != NULL && sanity->size != 0){
+		/* Check so that block in the freelist actually is free */
+		if(sanity->free != TRUE){
+			printf("NOT OK - found a block that is not free");
+			exit(1);
+		}
+		
+		/* Check so that block in the freelist actually is aligned */
+		if(sanity->size % ALIGN != 0){
+			printf("NOT OK - found a block that is not aligned");
+			exit(1);
+		}
+		
+		if(sanity->prev != prev){
+			printf("NOT OK - found a block with incorrect prev");
+			exit(1);
+		}
+		
+		prev = sanity;
+		sanity = sanity->next;
+	}
+	printf("sanity check complete without any abnormalities \n");
+}
+
+
+void init(){
+	struct head *first = new();
+	insert(first);
+}
+
+int freelistlength(){
+	int i = 0;
+	struct head *temp = flist;
+	while(temp != NULL){
+		i++;
+		temp = temp->next;
+	}
+	return i;
+}
+
+void sizes(int*buffer, int max){
+	struct head *next = flist;
+	int i = 0;
+	while((next != NULL) & (i < max)){
+		buffer[i] = next->size;
+		i++;
+		next = next->next;
+	}
+}
+
+
