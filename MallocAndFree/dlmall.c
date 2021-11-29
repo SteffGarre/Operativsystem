@@ -236,6 +236,9 @@ void dfree (void *memory){
   if(memory != NULL){
     struct head *block =  (struct head*) MAGIC(memory);
 
+    // call merge function
+    // block = merge(block);
+
     struct head *aft = after(block);
     block->free = TRUE;
     aft->bfree = block->free;
@@ -256,6 +259,7 @@ void traverseblocks(){
 	}
 }
 
+//checks if the freelist and arena looks ok
 void sanity(){
 
 	struct head *sanity = flist;
@@ -264,13 +268,14 @@ void sanity(){
 	int size = sanity->size;
 	
 	while(sanity != NULL && sanity->size != 0){
-		/* Check so that block in the freelist actually is free */
+
+		//Check so that block in the freelist actually is free
 		if(sanity->free != TRUE){
 			printf("NOT OK - found a block that is not free");
 			exit(1);
 		}
 		
-		/* Check so that block in the freelist actually is aligned */
+		// Check so that block in the freelist actually is aligned
 		if(sanity->size % ALIGN != 0){
 			printf("NOT OK - found a block that is not aligned");
 			exit(1);

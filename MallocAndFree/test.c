@@ -1,9 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
-#include "dlmalloc.h"
+#include "dlmall.h"
 
 void testfunct(){
-	
 	
 	init();
 	
