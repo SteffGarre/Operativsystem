@@ -237,7 +237,7 @@ void dfree (void *memory){
     struct head *block =  (struct head*) MAGIC(memory);
 
     // call merge function
-    //block = merge(block);
+    block = merge(block);
 
     struct head *aft = after(block);
     block->free = TRUE;
@@ -316,6 +316,12 @@ void sizes(int*buffer, int max){
 		i++;
 		next = next->next;
 	}
+}
+
+void terminate(){
+  munmap(arena, ARENA);
+  arena = NULL;
+  flist = NULL;
 }
 
 
