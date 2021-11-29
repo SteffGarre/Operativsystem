@@ -237,7 +237,7 @@ void dfree (void *memory){
     struct head *block =  (struct head*) MAGIC(memory);
 
     // call merge function
-    // block = merge(block);
+    //block = merge(block);
 
     struct head *aft = after(block);
     block->free = TRUE;
@@ -271,25 +271,25 @@ void sanity(){
 
 		//Check so that block in the freelist actually is free
 		if(sanity->free != TRUE){
-			printf("NOT OK - found a block that is not free");
+			printf("Error - found a block that is not free");
 			exit(1);
 		}
 		
 		// Check so that block in the freelist actually is aligned
 		if(sanity->size % ALIGN != 0){
-			printf("NOT OK - found a block that is not aligned");
+			printf("Error - found a block that is not aligned");
 			exit(1);
 		}
 		
 		if(sanity->prev != prev){
-			printf("NOT OK - found a block with incorrect prev");
+			printf("Error - found a block with incorrect prev");
 			exit(1);
 		}
 		
 		prev = sanity;
 		sanity = sanity->next;
 	}
-	printf("sanity check complete without any abnormalities \n");
+	printf("Sanity check OK, no problems found! \n");
 }
 
 
