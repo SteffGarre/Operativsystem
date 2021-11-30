@@ -1,6 +1,10 @@
 {
     "files.associations": {
         "math.h": "c",
-        "tuple": "c"
+        "tuple": "c",
+        "algorithm": "c",
+        "chrono": "c",
+        "limits": "c",
+        "ratio": "c"
     }
 }

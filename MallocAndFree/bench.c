@@ -6,7 +6,7 @@
 #include "random.h"
 #include "dlmall.h"
 #define BUFFER 100 
-#define MAX_SIZE 100 
+#define MAX_SIZE 100
 
 void allocate(int allocs){
 
@@ -22,7 +22,7 @@ void allocate(int allocs){
       dfree(buffer[index]);
     }
 
-    size_t size = (size_t)request(MAX_SIZE);
+    size_t size = (size_t)request();
     int *memory;
     memory = dalloc(size);
 
