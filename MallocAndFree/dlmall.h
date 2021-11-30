@@ -3,6 +3,5 @@ void dfree(void *memory);
 void sanity();
 void traverseblocks();
 void init();
-int freelistlength();
 void terminate();
-int printCountLengthOfFlist(int numOfAllocs);
+int freelistlength(int numOfAllocs);

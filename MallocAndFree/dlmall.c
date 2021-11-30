@@ -106,7 +106,8 @@ struct head *new(){
 }
 
 
-/*All free blocks will be linked in a double linked list. 
+/*
+All free blocks will be linked in a double linked list. 
 We define a procedures to detach() a block from the list and one to insert() a new block in the list. 
 Since the list is so far unordered we will always insert a block to the front of the list.
 */
@@ -138,8 +139,10 @@ void insert (struct head *block){
 
 }
 
-//Implement Malloc and Free
 
+// *** Function bellow implement Malloc and Free ***
+
+//adjust a requested size to be a of min size of 8 bytes and a multiple of 8.
 int adjust (size_t size){
 
   int minsize = MIN(size);
@@ -152,6 +155,7 @@ int adjust (size_t size){
   }
 }
 
+//function tries to find an available block in flist
 struct head *find(size_t size){
   struct head *temp = flist;
 
@@ -185,7 +189,7 @@ struct head *find(size_t size){
   return NULL;
 }
 
-
+//function tries to merge with any adjecent blocks.
 struct head *merge(struct head *block){
 
   struct head *aft = after(block);
@@ -213,7 +217,10 @@ struct head *merge(struct head *block){
 	return block;
 }
 
-
+// allocates a block of memory of a requested size.
+//adjust() adjustes the size to be a min of 8 bytes or a multiple of 8
+//find() looks in flist to see if there is a available block.
+//If we find a block, the macro HIDE returns a ptr to the data segment: ie hides its header.
 void *dalloc(size_t request){
 
   if(request <= 0){
@@ -231,6 +238,8 @@ void *dalloc(size_t request){
 
 }
 
+//free a previously allocated block of memory
+//if merge is implemented, the block tries to merge with any adjecent blocks.
 void dfree (void *memory){
 
   if(memory != NULL){
@@ -248,13 +257,13 @@ void dfree (void *memory){
   return;
 }
 
+//goes through the arena and all the blocks and prints their header values.
 void traverseblocks(){
 	struct head *temp = arena;
 	
 	while(temp->size != 0){
 		printf("address: %p\t, free: %d\t, size: %d\t, bfree: %d\t, bsize: %d\t\n", 
     temp, temp->free, temp->size, temp->bfree, temp->bsize);
-		
 		temp = after(temp);
 	}
 }
@@ -292,26 +301,9 @@ void sanity(){
 	printf("Sanity check OK, no problems found! \n");
 }
 
-
-void init(){
-	struct head *first = new();
-	insert(first);
-}
-
-int freelistlength(){
-	int i = 0;
-	struct head *temp = flist;
-	while(temp != NULL){
-		i++;
-		temp = temp->next;
-	}
-	return i;
-}
-
-int printCountLengthOfFlist(int numOfAllocs){
+//goes through flist and counts the # of free blocks.
+int freelistlength(int numOfAllocs){
   int count = 0;
-  int sum = 0; 
-  int average = 0;
   struct head *next = flist;
   while(next != NULL){
     count++;
@@ -319,6 +311,12 @@ int printCountLengthOfFlist(int numOfAllocs){
   }
   printf("%d\t\t%d\n", numOfAllocs, count);
   return count;
+}
+
+//initializes the arena and inserts it to the flist.
+void init(){
+	struct head *first = new();
+	insert(first);
 }
 
 void terminate(){

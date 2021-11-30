@@ -43,7 +43,7 @@ void checkFreeListLength(int allocs){
   for(int i = BUFFER; i < allocs+1; i+= 10){
     init();
     allocate(i);
-    printCountLengthOfFlist(i);
+    freelistlength(i);
     terminate();
   }
   printf("\n");
@@ -65,23 +65,16 @@ void checkDalloc(int allocs){
   printf("\n");
 }
 
-void checkSanity(int allocs){
-  init();
-  allocate(allocs);
-  sanity();
-  terminate();
-}
 
 int main(int argc, char const *argv[]) {
 
   if(argc < 2){
-    printf("Please enter:\tNumberOfAllocs\n");
+    printf("Error: Please enter a number of allocations\n");
     exit(1);
   }
+
   int allocs = atoi(argv[1]);
   checkDalloc(allocs);
   checkFreeListLength(allocs);
-  //checkSanity(allocs);
-  
   return 0;
 }
