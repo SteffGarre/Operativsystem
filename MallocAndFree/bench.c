@@ -50,15 +50,6 @@ void checkFreeListLength(int allocs){
   printf("Average length of free list is: %d \n", average);
 }
 
-/*
-void checkFreeListDist(int allocs){
-  printf("# Checking distribution of the block sizes in flist\n# Average\tflistLength\n");
-  init();
-  allocate(allocs);
-  printAverageSizeDistributionOfFlist();
-  terminate();
-}*/
-
 void BenchmarkPalloc(int allocs){
   printf("# Evaluation of time performance\n# Allocs\tTime(ms)\n");
   clock_t time_start, time_stop;
@@ -74,9 +65,7 @@ void BenchmarkPalloc(int allocs){
   }
 }
 
-
-
-void testSanity(int allocs){
+void checkSanity(int allocs){
   init();
   allocate(allocs);
   sanity();
@@ -89,15 +78,10 @@ int main(int argc, char const *argv[]) {
     printf("Please enter:\tNumberOfAllocs\n");
     exit(1);
   }
-
   int allocs = atoi(argv[1]);
   BenchmarkPalloc(allocs);
-  //sleep(1);
   checkFreeListLength(allocs);
-  //sleep(1);
-  //checkFreeListDist(allocs);
-  //sleep(0.1);
-  //testSanity(allocs);
-
+  //checkSanity(allocs);
+  
   return 0;
 }

@@ -237,7 +237,7 @@ void dfree (void *memory){
     struct head *block =  (struct head*) MAGIC(memory);
 
     // call merge function
-    //block = merge(block);
+    block = merge(block);
 
     struct head *aft = after(block);
     block->free = TRUE;
@@ -306,16 +306,6 @@ int freelistlength(){
 		temp = temp->next;
 	}
 	return i;
-}
-
-void sizes(int*buffer, int max){
-	struct head *next = flist;
-	int i = 0;
-	while((next != NULL) & (i < max)){
-		buffer[i] = next->size;
-		i++;
-		next = next->next;
-	}
 }
 
 int printCountLengthOfFlist(int numOfAllocs){
