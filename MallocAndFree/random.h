@@ -1,1 +1,1 @@
-size_t request();
+int request(int max);

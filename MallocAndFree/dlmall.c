@@ -188,7 +188,7 @@ struct head *find(size_t size){
 
 struct head *merge(struct head *block){
 
-	struct head *aft = after(block);
+  struct head *aft = after(block);
 	
 	
 	if(block->bfree == TRUE){
@@ -237,7 +237,7 @@ void dfree (void *memory){
     struct head *block =  (struct head*) MAGIC(memory);
 
     // call merge function
-    block = merge(block);
+    //block = merge(block);
 
     struct head *aft = after(block);
     block->free = TRUE;
@@ -316,6 +316,19 @@ void sizes(int*buffer, int max){
 		i++;
 		next = next->next;
 	}
+}
+
+int printCountLengthOfFlist(int numOfAllocs){
+  int count = 0;
+  int sum = 0; 
+  int average = 0;
+  struct head *next = flist;
+  while(next != NULL){
+    count++;
+    next = next->next;
+  }
+  printf("%d\t%d\n", numOfAllocs, count);
+  return count;
 }
 
 void terminate(){

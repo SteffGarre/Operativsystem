@@ -6,9 +6,9 @@
 #include "random.h"
 #include "dlmall.h"
 #define BUFFER 100 
-#define MAX_SIZE 128 
+#define MAX_SIZE 100 
 
-void bench(int allocs){
+void allocate(int allocs){
 
   void *buffer[BUFFER];
   for(int i = 0; i < BUFFER; i++){
@@ -17,6 +17,7 @@ void bench(int allocs){
 
   for(int i = 0; i < allocs; i++){
     int index = rand() % BUFFER;
+
     if(buffer[index] != NULL){
       dfree(buffer[index]);
     }
@@ -29,6 +30,7 @@ void bench(int allocs){
       fprintf(stderr, "allocation failed\n");
       return;
     }
+
     buffer[index] = memory;
     /* writing to the memory so we know it exists */
     *memory = 123;
@@ -40,7 +42,7 @@ void checkFreeListLength(int allocs){
   int sum, average = 0;
   for(int i = BUFFER; i < allocs+1; i+= 10){
     init();
-    bench(i);
+    allocate(i);
     sum+= printCountLengthOfFlist(i);
     average = sum/100;
     terminate();
@@ -48,19 +50,35 @@ void checkFreeListLength(int allocs){
   printf("Average length of free list is: %d \n", average);
 }
 
+/*
 void checkFreeListDist(int allocs){
   printf("# Checking distribution of the block sizes in flist\n# Average\tflistLength\n");
   init();
-  bench(allocs);
+  allocate(allocs);
   printAverageSizeDistributionOfFlist();
   terminate();
+}*/
+
+void BenchmarkPalloc(int allocs){
+  printf("# Evaluation of time performance\n# Allocs\tTime(ms)\n");
+  clock_t time_start, time_stop;
+  double timeAlloc = 0;
+  for(int i = BUFFER; i < allocs+1; i+= 10){
+    init();
+    time_start = clock();
+    allocate(i);
+    time_stop = clock();
+    terminate();
+    timeAlloc = ((double)(time_stop - time_start)) / ((double)CLOCKS_PER_SEC/1000);
+    printf("%d\t%f ms\n", i, timeAlloc);
+  }
 }
 
 
 
 void testSanity(int allocs){
   init();
-  bench(allocs);
+  allocate(allocs);
   sanity();
   terminate();
 }
@@ -77,7 +95,7 @@ int main(int argc, char const *argv[]) {
   //sleep(1);
   checkFreeListLength(allocs);
   //sleep(1);
-  checkFreeListDist(allocs);
+  //checkFreeListDist(allocs);
   //sleep(0.1);
   //testSanity(allocs);
 
