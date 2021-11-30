@@ -317,7 +317,7 @@ int printCountLengthOfFlist(int numOfAllocs){
     count++;
     next = next->next;
   }
-  printf("%d\t%d\n", numOfAllocs, count);
+  printf("%d\t\t%d\n", numOfAllocs, count);
   return count;
 }
 
