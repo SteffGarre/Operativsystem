@@ -50,14 +50,12 @@ void allocate(int allocs){
 
 
 //Starts with TEST_CONST number of allocations until we reach the requested # of allocation from main! 
-//Increases by +10 allocations for every iteration
+//Increases by +20 allocations for every iteration
 //Checks length of flist for every iteration
 void check_flist_length(int allocs){
 
-  printf("** Checking length of flist **\n#Allocations\tflistLength\n");
-  int sum = 0;
-
-  for(int i = TEST_CONST; i < allocs+1; i+= 10){
+  //printf("** Checking length of flist and average byte-size **\n#Allocations\tflistLength\tAverage size in flist\n");
+  for(int i = TEST_CONST; i < allocs+1; i+= 20){
     init();
     allocate(i);
     freelistlength(i);
@@ -68,22 +66,23 @@ void check_flist_length(int allocs){
 
 
 //Starts with TEST_CONST number of allocations until we reach the requested # of allocation from main! 
-//Increases by +10 allocations for every iteration
+//Increases by +20 allocations for every iteration
 //checks time performane vs # of allocations for every iteration
 void checkDalloc(int allocs){
 
-  printf("** Testing of time performance vs number of allocations **\n#Allocations\tTime(ms)\n");
+  //printf("** Testing of time performance vs number of allocations **\n#Allocations\tTime(ms)\n");
   clock_t start, stop;
   double timeAlloc = 0;
 
-  for(int i = TEST_CONST; i < allocs+1; i+= 10){
+  for(int i = TEST_CONST; i < allocs+1; i+= 20){
     init();
     start = clock();
     allocate(i);
     stop = clock();
     terminate();
     timeAlloc = ((double)(stop - start)) / ((double)CLOCKS_PER_SEC/1000);
-    printf("%d\t\t%f ms\n", i, timeAlloc);
+    //printf("%d\t\t%f ms\n", i, timeAlloc);
+    printf("%d\t%f\n", i, timeAlloc);
   }
   printf("\n");
 }
@@ -121,7 +120,7 @@ int main(int argc, char const *argv[]) {
   }
 
   int allocs = atoi(argv[1]);
-  checkDalloc(allocs);
+  //checkDalloc(allocs);
   check_flist_length(allocs);
   //checkTakenOpt();
   return 0;
