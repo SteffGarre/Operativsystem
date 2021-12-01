@@ -6,6 +6,9 @@
 #include "random.h"
 #include "dlmall.h"
 #define TEST_CONST 100 
+#define BLOCKS 1000
+#define LOOP 1000
+#define ROUNDS 10000
 
 void allocate(int allocs){
   
@@ -50,8 +53,10 @@ void allocate(int allocs){
 //Increases by +10 allocations for every iteration
 //Checks length of flist for every iteration
 void check_flist_length(int allocs){
+
   printf("** Checking length of flist **\n#Allocations\tflistLength\n");
   int sum = 0;
+
   for(int i = TEST_CONST; i < allocs+1; i+= 10){
     init();
     allocate(i);
@@ -66,21 +71,47 @@ void check_flist_length(int allocs){
 //Increases by +10 allocations for every iteration
 //checks time performane vs # of allocations for every iteration
 void checkDalloc(int allocs){
+
   printf("** Testing of time performance vs number of allocations **\n#Allocations\tTime(ms)\n");
-  clock_t time_start, time_stop;
+  clock_t start, stop;
   double timeAlloc = 0;
+
   for(int i = TEST_CONST; i < allocs+1; i+= 10){
     init();
-    time_start = clock();
+    start = clock();
     allocate(i);
-    time_stop = clock();
+    stop = clock();
     terminate();
-    timeAlloc = ((double)(time_stop - time_start)) / ((double)CLOCKS_PER_SEC/1000);
+    timeAlloc = ((double)(stop - start)) / ((double)CLOCKS_PER_SEC/1000);
     printf("%d\t\t%f ms\n", i, timeAlloc);
   }
   printf("\n");
 }
 
+void checkTakenOpt(){
+
+  printf("** Testing taken optimization **\n");
+  int *array[BLOCKS];
+	init();
+	clock_t start, stop;
+  double timeAlloc = 0;
+	start = clock();
+	
+	for(int i = 0; i < BLOCKS; i++){
+		array[i] = dalloc(16);
+	}
+	
+	for(int i = 0; i < ROUNDS; i++){
+		for(int j = 0; j < LOOP; j++){
+			*array[j] = 100;
+		}
+	}
+
+	stop = clock();
+  terminate();
+  timeAlloc = ((double)(stop - start)) / ((double)CLOCKS_PER_SEC/1000);
+	printf("Time elapsed: %f ms\n\n", timeAlloc);
+}
 
 int main(int argc, char const *argv[]) {
 
@@ -92,5 +123,6 @@ int main(int argc, char const *argv[]) {
   int allocs = atoi(argv[1]);
   checkDalloc(allocs);
   check_flist_length(allocs);
+  //checkTakenOpt();
   return 0;
 }

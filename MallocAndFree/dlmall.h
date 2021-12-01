@@ -1,4 +1,5 @@
 void *dalloc(size_t requested);
+void *dalloc2(size_t requested);
 void dfree(void *memory);
 void sanity();
 void traverseblocks();

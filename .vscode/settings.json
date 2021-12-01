@@ -5,6 +5,19 @@
         "algorithm": "c",
         "chrono": "c",
         "limits": "c",
-        "ratio": "c"
+        "ratio": "c",
+        "__hash_table": "c",
+        "__split_buffer": "c",
+        "array": "c",
+        "bitset": "c",
+        "hash_map": "c",
+        "initializer_list": "c",
+        "iterator": "c",
+        "list": "c",
+        "string": "c",
+        "string_view": "c",
+        "unordered_map": "c",
+        "utility": "c",
+        "vector": "c"
     }
 }

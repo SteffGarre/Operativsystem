@@ -4,6 +4,12 @@
 #include <sys/mman.h>
 #include <errno.h> 
 
+struct taken{
+  uint16_t bfree;       // 2 bytes, the status of block before
+  uint16_t bsize;       // 2 bytes, the size of block before
+  uint16_t free;        // 2 bytes, the status of the block
+  uint16_t size;        // 2 bytes, the size (max 2^16 ie 64 Kbyte)
+};
 
 struct head{
   uint16_t bfree;       // 2 bytes, the status of block before
@@ -14,21 +20,32 @@ struct head{
   struct head *prev;    // 8 bytes pointer
 };
 
-//macros
 #define TRUE 1
 #define FALSE 0
-#define HEAD (sizeof(struct head)) //is the size of the head structure, 24 bytes.
-#define MIN(size) (((size)> (8))?(size):(8)) //The minimum size that we will hand out is 8 bytes
 
+/*
+#define HEAD (sizeof(struct taken)) //is the size of the head structure, 24 bytes.
+#define MIN(size) (((size)> (16))?(size):(16)) //The minimum size that we will hand out is 8 bytes
+#define MAGIC(memory) ((struct taken*)memory - 1)
+#define HIDE(block) (void*)((struct taken*)block + 1)
+*/
+
+
+
+//macros
 //The limit is the size a block has to be larger than in order to split it.
 //EX: If we want to split a block to accommodate a block of 32 bytes it has
 //to be 62 (8 + 24 + 32) or larger. The smallest block we will split is a block 
 //of size 40 that could be divided up into two 8 byte blocks (24 + 40 = 24 + 8 + 24 + 8).
-#define LIMIT(size) (MIN(0) + HEAD + size)
-
+#define HEAD (sizeof(struct head)) //is the size of the head structure, 24 bytes.
+#define MIN(size) (((size)> (8))?(size):(8)) //The minimum size that we will hand out is 8 bytes
 #define MAGIC(memory) ((struct head*)memory - 1)
 #define HIDE(block) (void*)((struct head*)block + 1)
 
+
+
+
+#define LIMIT(size) (MIN(0) + HEAD + size)
 #define ALIGN 8
 #define ARENA (64*1024)
 
@@ -233,7 +250,23 @@ void *dalloc(size_t request){
   if(taken == NULL){
     return NULL;
   } else {
-    return  HIDE(taken);
+    return HIDE(taken);
+  }
+}
+
+void *dalloc2(size_t request){
+
+  if(request <= 0){
+    return NULL;
+  }
+
+  int size = adjust(request);
+  struct taken *taken = (struct taken*) find(size);
+
+  if(taken == NULL){
+    return NULL;
+  } else {
+    return HIDE(taken);
   }
 
 }
