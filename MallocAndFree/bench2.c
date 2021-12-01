@@ -89,11 +89,11 @@ void checkDalloc(int allocs){
 
 void checkTakenOpt(){
 
-  printf("** Testing taken optimization **\n");
-  int *array[BLOCKS];
+    printf("** Testing taken optimization **\n");
+    int *array[BLOCKS];
     init();
     clock_t start, stop;
-  double timeAlloc = 0;
+    double timeAlloc = 0;
     start = clock();
     
     for(int i = 0; i < BLOCKS; i++){
@@ -107,8 +107,8 @@ void checkTakenOpt(){
     }
 
     stop = clock();
-  terminate();
-  timeAlloc = ((double)(stop - start)) / ((double)CLOCKS_PER_SEC/1000);
+    terminate();
+    timeAlloc = ((double)(stop - start)) / ((double)CLOCKS_PER_SEC/1000);
     printf("Time elapsed: %f ms\n\n", timeAlloc);
 }
 
@@ -122,7 +122,7 @@ int main(int argc, char const *argv[]) {
 
   int allocs = atoi(argv[1]);
   //checkDalloc(allocs);
-  //check_flist_length(allocs);
+  check_flist_length(allocs);
   checkTakenOpt();
   return 0;
 }
