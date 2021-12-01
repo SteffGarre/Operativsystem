@@ -8,7 +8,7 @@
 #define TEST_CONST 100 
 #define BLOCKS 1000
 #define LOOP 1000
-#define ROUNDS 10000
+#define ROUNDS 1000
 
 void allocate(int allocs){
   
@@ -87,9 +87,9 @@ void checkDalloc(int allocs){
   printf("\n");
 }
 
-void checkTakenOpt(){
+double checkTakenOpt(){
 
-    printf("** Testing taken optimization **\n");
+    //printf("** Testing taken optimization **\n");
     int *array[BLOCKS];
     init();
     clock_t start, stop;
@@ -109,7 +109,9 @@ void checkTakenOpt(){
     stop = clock();
     terminate();
     timeAlloc = ((double)(stop - start)) / ((double)CLOCKS_PER_SEC/1000);
-    printf("Time elapsed: %f ms\n\n", timeAlloc);
+    //printf("Time elapsed: %f ms\n\n", timeAlloc);
+    printf("%f\n",timeAlloc);
+    return timeAlloc;
 }
 
 
@@ -121,8 +123,15 @@ int main(int argc, char const *argv[]) {
   }
 
   int allocs = atoi(argv[1]);
-  checkDalloc(allocs);
-  check_flist_length(allocs);
-  checkTakenOpt();
+  //checkDalloc(allocs);
+  //check_flist_length(allocs);
+
+  double sum = 0;
+  for(int i = 1; i <= 100; i++){
+    printf("%d\t",i);
+    sum += checkTakenOpt();
+  }
+  printf("%f\n", sum/100);
+ 
   return 0;
 }

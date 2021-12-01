@@ -231,7 +231,7 @@ void *dalloc(size_t request){
   }
 
   int size = adjust(request);
-  struct head *taken = find(size);
+  struct taken *taken =(struct taken*) find(size);
 
   if(taken == NULL){
     return NULL;
