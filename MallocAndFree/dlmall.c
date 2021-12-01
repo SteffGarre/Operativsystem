@@ -244,7 +244,7 @@ void dfree (void *memory){
     struct head *block =  (struct head*) MAGIC(memory);
 
     // call merge function
-    block = merge(block);
+    //block = merge(block);
 
     struct head *aft = after(block);
     block->free = TRUE;
