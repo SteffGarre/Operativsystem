@@ -87,6 +87,31 @@ void checkDalloc(int allocs){
   printf("\n");
 }
 
+void checkTakenOpt(){
+
+  printf("** Testing without taken optimization **\n");
+  int *array[BLOCKS];
+    init();
+    clock_t start, stop;
+  double timeAlloc = 0;
+    start = clock();
+    
+    for(int i = 0; i < BLOCKS; i++){
+        array[i] = dalloc(16);
+    }
+    
+    for(int i = 0; i < ROUNDS; i++){
+        for(int j = 0; j < LOOP; j++){
+            *array[j] = 100;
+        }
+    }
+
+    stop = clock();
+  terminate();
+  timeAlloc = ((double)(stop - start)) / ((double)CLOCKS_PER_SEC/1000);
+    printf("Time elapsed: %f ms\n\n", timeAlloc);
+}
+
 
 int main(int argc, char const *argv[]) {
 
@@ -97,6 +122,7 @@ int main(int argc, char const *argv[]) {
 
   int allocs = atoi(argv[1]);
   //checkDalloc(allocs);
-  check_flist_length(allocs);
+  //check_flist_length(allocs);
+  checkTakenOpt();
   return 0;
 }

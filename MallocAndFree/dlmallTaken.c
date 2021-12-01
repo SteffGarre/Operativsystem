@@ -231,30 +231,13 @@ void *dalloc(size_t request){
   }
 
   int size = adjust(request);
-  struct head *taken = find(size);
+  struct taken *taken = (struct taken*)find(size);
 
   if(taken == NULL){
     return NULL;
   } else {
     return HIDE(taken);
   }
-}
-
-void *dalloc2(size_t request){
-
-  if(request <= 0){
-    return NULL;
-  }
-
-  int size = adjust(request);
-  struct taken *taken = (struct taken*) find(size);
-
-  if(taken == NULL){
-    return NULL;
-  } else {
-    return HIDE(taken);
-  }
-
 }
 
 //free a previously allocated block of memory
@@ -265,7 +248,7 @@ void dfree (void *memory){
     struct head *block =  (struct head*) MAGIC(memory);
 
     // call merge function
-    block = merge(block);
+    //block = merge(block);
 
     struct head *aft = after(block);
     block->free = TRUE;
