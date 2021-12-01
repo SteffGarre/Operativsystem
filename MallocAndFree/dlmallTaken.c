@@ -25,8 +25,8 @@ struct head{
 #define FALSE 0
 
 
-#define HEAD (sizeof(struct taken)) //is the size of the head structure, 24 bytes.
-#define MIN(size) (((size)> (16))?(size):(16)) //The minimum size that we will hand out is 8 bytes
+#define HEAD (sizeof(struct taken)) //is the size of the head structure, 8 bytes.
+#define MIN(size) (((size)> (16))?(size):(16)) //The minimum size that we will hand out is 16 bytes
 #define MAGIC(memory) ((struct taken*)memory - 1)
 #define HIDE(block) (void*)((struct taken*)block + 1)
 
@@ -231,7 +231,7 @@ void *dalloc(size_t request){
   }
 
   int size = adjust(request);
-  struct taken *taken = (struct taken*)find(size);
+  struct head *taken = find(size);
 
   if(taken == NULL){
     return NULL;
@@ -248,7 +248,7 @@ void dfree (void *memory){
     struct head *block =  (struct head*) MAGIC(memory);
 
     // call merge function
-    //block = merge(block);
+   //block = merge(block);
 
     struct head *aft = after(block);
     block->free = TRUE;

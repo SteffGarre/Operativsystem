@@ -121,7 +121,7 @@ int main(int argc, char const *argv[]) {
   }
 
   int allocs = atoi(argv[1]);
-  //checkDalloc(allocs);
+  checkDalloc(allocs);
   check_flist_length(allocs);
   checkTakenOpt();
   return 0;
