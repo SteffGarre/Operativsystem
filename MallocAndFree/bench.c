@@ -127,11 +127,11 @@ int main(int argc, char const *argv[]) {
   //check_flist_length(allocs);
   
   double sum = 0;
-  for(int i = 1; i <= 100; i++){
+  for(int i = 1; i <= 150; i++){
     printf("%d\t",i);
     sum += checkTakenOpt();
   }
-  printf("%f\n", sum/100);
+  printf("%f\n", sum/150);
 
   return 0;
 }
