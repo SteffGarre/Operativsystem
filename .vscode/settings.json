@@ -20,6 +20,8 @@
         "utility": "c",
         "vector": "c",
         "stdio.h": "c",
-        "stdlib.h": "c"
+        "stdlib.h": "c",
+        "ucontext.h": "c",
+        "greenmal.h": "c"
     }
 }
