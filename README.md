@@ -1,1 +1,2 @@
-# Operativsystem, ID1206
+# Operativsystem
+Assignments for the OS course ID1206. 
